@@ -34,23 +34,23 @@ The system is divided into two primary pipelines: **Ingestion & Indexing** and *
 
 ```mermaid
 flowchart TD
-    subgraph Ingestion ["📥 Ingestion & Indexing Pipeline"]
-        A[Raw Policies<br/>.pdf / .docx] --> B[Loader & Metadata Extractor]
-        B --> C[Contextual Text Splitter]
-        C --> D[BAAI/bge-small-en-v1.5<br/>Embeddings]
-        D --> E[(FAISS Index<br/>IndexFlatIP + JSON Metadata)]
+    subgraph Ingestion ["Ingestion and Indexing Pipeline"]
+        A["Raw Policies (.pdf / .docx)"] --> B["Loader and Metadata Extractor"]
+        B --> C["Contextual Text Splitter"]
+        C --> D["BAAI/bge-small-en-v1.5 Embeddings"]
+        D --> E[("FAISS Index: IndexFlatIP + Metadata")]
     end
 
-    subgraph Inference ["⚡ Runtime Inference Pipeline"]
-        Q[Employee Query<br/>UI or REST API] --> G[Input Guardrails<br/>Validation]
-        G -->|Approved| H[Dense Vector Search<br/>Top-K Overfetch]
+    subgraph Inference ["Runtime Inference Pipeline"]
+        Q["Employee Query (UI or REST API)"] --> G["Input Guardrails Validation"]
+        G -->|Approved| H["Dense Vector Search (Top-K Overfetch)"]
         E -.-> H
-        H --> I[Cross-Encoder<br/>Re-ranking]
-        I --> J[Context Assembly<br/>Token Budgeting]
-        J --> K[LLM Synthesis<br/>OpenAI / Groq / Gemini]
-        K --> L[Output Guardrails &<br/>Citation Verification]
-        L --> M[Structured Response<br/>with Verified Citations]
-        G -->|Rejected| F[Fallback / Rejection Response]
+        H --> I["Cross-Encoder Re-ranking"]
+        I --> J["Context Assembly & Token Budgeting"]
+        J --> K["LLM Synthesis (OpenAI / Groq / Gemini)"]
+        K --> L["Output Guardrails & Citation Verification"]
+        L --> M["Structured Response with Verified Citations"]
+        G -->|Rejected| F["Fallback / Rejection Response"]
     end
 ```
 
